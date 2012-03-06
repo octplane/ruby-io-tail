@@ -231,6 +231,10 @@ class File
     end
 
     def restat
+      if ! self.respond_to?(:path)
+        @stat = nil
+        return
+      end
       stat = File.stat(path)
       if @stat
         if stat.ino != @stat.ino or stat.dev != @stat.dev
