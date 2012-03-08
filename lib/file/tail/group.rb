@@ -25,8 +25,8 @@ class File
       # Add a file (IO instance) or filename (responding to to_str) to this
       # group.
       def add(file_or_filename)
-        if file_or_filename.respond_to?(:to_io)
-          add_file file_or_filename.to_io
+        if file_or_filename.is_a?(File::Tail::Tailable)
+          add_tailable file_or_filename
         elsif file_or_filename.respond_to?(:to_str)
           add_filename file_or_filename
         end
@@ -35,7 +35,7 @@ class File
       alias << add
 
       # Add the IO instance +file+ to this group.
-      def add_file(file)
+      def add_tailable(file)
         setup_file_tailer file
         self
       end
@@ -87,7 +87,6 @@ class File
       private
 
       def setup_file_tailer(file)
-        file.extend File::Tail
         setup = ConditionVariable.new
         mutex = Mutex.new
         ft = nil

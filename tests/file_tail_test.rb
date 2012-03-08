@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+$: << File.dirname(__FILE__)
+$: << File.join(File.dirname(__FILE__),'..', 'lib')
+
 require 'test_helper'
 require 'file/tail'
 require 'timeout'
@@ -7,13 +10,12 @@ require 'thread'
 Thread.abort_on_exception = true
 
 class FileTailTest < Test::Unit::TestCase
-  include File::Tail
 
   def setup
     @out = File.new("test.#$$", "wb")
     append(@out, 100)
-    @in = File.new(@out.path, "rb")
-    @in.extend(File::Tail)
+    in_file = File.new(@out.path, "rb")
+    @in = File::Tail::TailableFile.new(in_file)
     @in.interval            = 0.4
     @in.max_interval        = 0.8
     @in.reopen_deleted      = true # is default
@@ -178,7 +180,7 @@ class FileTailTest < Test::Unit::TestCase
       end
       @out.close
       File.truncate(@out.path, 0)
-      @out = File.new(@in.path, "ab")
+      @out = File.new(@in._file.path, "ab")
       append(@out, 10)
     end
     appender.join
@@ -208,7 +210,7 @@ class FileTailTest < Test::Unit::TestCase
       end
       @out.close
       File.unlink(@out.path)
-      @out = File.new(@in.path, "wb")
+      @out = File.new(@in._file.path, "wb")
       append(@out, 10)
     end
     appender.join
@@ -239,12 +241,12 @@ class FileTailTest < Test::Unit::TestCase
       end
       @out.close
       File.unlink(@out.path)
-      @out = File.new(@in.path, "wb")
+      @out = File.new(@in._file.path, "wb")
       append(@out, 10)
       sleep 1
       append(@out, 10)
       File.unlink(@out.path)
-      @out = File.new(@in.path, "wb")
+      @out = File.new(@in._file.path, "wb")
       append(@out, 10)
     end
     appender.join
@@ -275,12 +277,12 @@ class FileTailTest < Test::Unit::TestCase
       end
       @out.close
       File.unlink(@out.path)
-      @out = File.new(@in.path, "wb")
+      @out = File.new(@in._file.path, "wb")
       append(@out, 10)
       sleep 1
       append(@out, 10)
       File.unlink(@out.path)
-      @out = File.new(@in.path, "wb")
+      @out = File.new(@in._file.path, "wb")
       append(@out, 10)
     end
     appender.join
@@ -299,7 +301,7 @@ class FileTailTest < Test::Unit::TestCase
 
   def count(file)
     n = 0
-    until file.eof?
+    until file._file.eof?
       file.readline
       n += 1
     end

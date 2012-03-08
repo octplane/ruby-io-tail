@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 
+$: << File.dirname(__FILE__)
+$: << File.join(File.dirname(__FILE__),'..', 'lib')
+
 require 'test_helper'
-require 'file/tail'
+require 'file-tail'
 require 'timeout'
 require 'thread'
 require 'tempfile'
@@ -29,7 +32,7 @@ class FileTailGroupTest < Test::Unit::TestCase
   def test_add_file_to_group
     g = Group.new
     t, = make_file
-    g.add_file t
+    g.add_tailable t
     assert_equal t.path, g.each_tailer.first.file.path
     assert_equal t.path, g.each_file.first.path
   end
@@ -38,7 +41,7 @@ class FileTailGroupTest < Test::Unit::TestCase
     g = Group.new
     t, name = make_file
     t.close
-    g.add_filename name
+    g.add name
     assert_equal name, g.each_tailer.first.file.path
     assert_equal t.path, g.each_file.first.path
   end
@@ -79,7 +82,6 @@ class FileTailGroupTest < Test::Unit::TestCase
   def make_file
     name = File.expand_path(File.join(Dir.tmpdir, "tmp.#$$"))
     file = File.open(name, 'w+')
-    file.extend File::Tail
-    return file, name
+    return File::Tail::TailableFile.new(file), name
   end
 end
