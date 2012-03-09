@@ -10,15 +10,16 @@ require 'file/tail/version'
 GemHadar do
   name        'file-tail'
   path_name   'file/tail'
-  author      'Florian Frank'
-  email       'flori@ping.de'
-  homepage    "http://github.com/flori/#{name}"
+  author      'Pierre Baillet'
+  email       'pierre@baillet.name'
+  homepage    "http://github.com/octplane/#{name}"
   summary     "#{path_name.camelize} for Ruby"
-  description 'Library to tail files in Ruby'
+  description 'Library to tail files and process in Ruby'
   test_dir    'tests'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '*.rbc'
   readme      'README.rdoc'
   version     File::Tail::VERSION
+  executables 'rtail'
 
   dependency  'tins', '~>0.3'
 
