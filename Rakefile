@@ -18,7 +18,7 @@ GemHadar do
   test_dir    'tests'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '*.rbc'
   readme      'README.rdoc'
-  version     File::Tail::VERSION
+  version     IO::Tail::VERSION
   executables 'rtail'
 
   dependency  'tins', '~>0.3'

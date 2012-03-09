@@ -7,7 +7,7 @@ following a file, that still is growing like the unix command 'tail -f' can.
 
 == Download
 
-The latest version of <b>IO::Tail</b> (file-tail) can be found at
+The latest version of <b>IO::Tail</b> (io-tail) can be found at
 
 https://github.com/octplane/ruby-io-tail
 
@@ -17,7 +17,7 @@ http://rubydoc.info/github/octplane/ruby-io-tail/
 
 == Installation
 
-To install file-tail via its gem type:
+To install io-tail via its gem type:
 
 # gem install io-tail
 
