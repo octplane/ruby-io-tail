@@ -13,6 +13,7 @@ https://github.com/octplane/ruby-io-tail
 
 Online Documentation should be located at
 
+http://rubydoc.info/github/octplane/ruby-io-tail/
 
 == Installation
 
