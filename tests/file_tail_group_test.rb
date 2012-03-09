@@ -4,25 +4,24 @@ $: << File.dirname(__FILE__)
 $: << File.join(File.dirname(__FILE__),'..', 'lib')
 
 require 'test_helper'
-require 'file-tail'
+require 'io-tail'
 require 'timeout'
 require 'thread'
 require 'tempfile'
 Thread.abort_on_exception = true
 
 class FileTailGroupTest < Test::Unit::TestCase
-  include File::Tail
 
   def test_create_group
     t, = make_file
-    g = Group[t]
+    g = IO::Tail::Group[t]
     assert_equal t.path, g.each_tailer.first.file.path
     assert_equal t.path, g.each_file.first.path
   end
 
   def test_stop_group
     t, = make_file
-    g = Group[t]
+    g = IO::Tail::Group[t]
     assert_equal t.path, g.each_tailer.first.file.path
     assert_equal t.path, g.each_file.first.path
     g.stop
@@ -30,7 +29,7 @@ class FileTailGroupTest < Test::Unit::TestCase
   end
 
   def test_add_file_to_group
-    g = Group.new
+    g = IO::Tail::Group.new
     t, = make_file
     g.add_tailable t
     assert_equal t.path, g.each_tailer.first.file.path
@@ -38,7 +37,7 @@ class FileTailGroupTest < Test::Unit::TestCase
   end
 
   def test_add_filename_to_group
-    g = Group.new
+    g = IO::Tail::Group.new
     t, name = make_file
     t.close
     g.add name
@@ -47,7 +46,7 @@ class FileTailGroupTest < Test::Unit::TestCase
   end
 
   def test_add_generic_to_group
-    g = Group.new
+    g = IO::Tail::Group.new
     t1, n1 = make_file
     t1.close
     t2, n1 = make_file
@@ -64,7 +63,7 @@ class FileTailGroupTest < Test::Unit::TestCase
     t1.max_interval = 0.1
     t2, = make_file
     t2.max_interval = 0.1
-    g = Group[t1, t2]
+    g = IO::Tail::Group[t1, t2]
     q = Queue.new
     t = Thread.new do
       g.tail { |l| q << l }
@@ -80,8 +79,8 @@ class FileTailGroupTest < Test::Unit::TestCase
   private
 
   def make_file
-    name = File.expand_path(File.join(Dir.tmpdir, "tmp.#$$"))
+    name = File.expand_path(::File.join(Dir.tmpdir, "tmp.#$$"))
     file = File.open(name, 'w+')
-    return File::Tail::TailableFile.new(file), name
+    return IO::Tail::File.new(file), name
   end
 end

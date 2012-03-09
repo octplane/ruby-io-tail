@@ -1,4 +1,4 @@
-class File
+class IO
   module Tail
     # This class supervises activity on a tailed fail and collects newly read
     # lines until the Tail::Group fetches and processes them.

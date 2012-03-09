@@ -1,11 +1,11 @@
 require 'thread'
 
-class File
+class IO
   module Tail
     # This class can be used to coordinate tailing of many files, which have
     # been added to the group.
     class Group
-      # Creates a new File::Tail::Group instance.
+      # Creates a new IO::Tail::Group instance.
       #
       # The following options can be given as arguments:
       # :files:: an array of files (or filenames to open) that are placed into
@@ -25,7 +25,7 @@ class File
       # Add a file (IO instance) or filename (responding to to_str) to this
       # group.
       def add(file_or_filename)
-        if file_or_filename.is_a?(File::Tail::Tailable)
+        if file_or_filename.is_a?(IO::Tail::Tailable)
           add_tailable file_or_filename
         elsif file_or_filename.respond_to?(:to_str)
           add_filename file_or_filename

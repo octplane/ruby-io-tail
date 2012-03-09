@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'file-tail'
+require 'io-tail'
 require 'tins/go'
 include Tins::GO
 require 'thread'
@@ -25,7 +25,7 @@ end
 dirs, logfiles = ARGV.partition { |path| File.directory?(path) }
 
 $n = ($opt['n'] || 0).to_i
-$logfiles = File::Tail::Group.new
+$logfiles = IO::Tail::Group.new
 
 def add_logfiles(logfiles)
   logfiles = logfiles.map { |l| File.expand_path(l) }

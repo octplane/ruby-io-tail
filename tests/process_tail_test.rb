@@ -6,7 +6,7 @@ $: << File.join(File.dirname(__FILE__),'..', 'lib')
 
 
 require 'test_helper'
-require 'file-tail'
+require 'io-tail'
 require 'timeout'
 require 'thread'
 Thread.abort_on_exception = true
@@ -15,7 +15,7 @@ class ProcessTailTest < Test::Unit::TestCase
 
   def setup
     @out = File.new("test.#$$", "wb")
-    @in = File::Tail::TailableProcess.new("tail -n 0 -F test.#$$")
+    @in = IO::Tail::Process.new("tail -n 0 -F test.#$$")
     @in.interval            = 0.1
     @in.max_interval        = 0.2
     @in.reopen_deleted      = true # is default

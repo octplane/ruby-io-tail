@@ -1,7 +1,0 @@
-require 'file/tail'
-require 'file/tail/process'
-require 'file/tail/version'
-require 'file/tail/logfile'
-require 'file/tail/group'
-require 'file/tail/tailer'
-require 'file/tail/line_extension'

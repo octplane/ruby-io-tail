@@ -1,4 +1,4 @@
-class File
+class IO
   module Tail
     # This module is used to extend all lines received via one of the tailers
     # of a File::Tail::Group.

@@ -1,25 +1,24 @@
-= File::Tail for Ruby
+= IO::Tail for Ruby
 
 == Description
 
-This is a small ruby library that allows it to "tail" files in Ruby, including
+This is a small ruby library that allows it to "tail" various IOs in Ruby, including
 following a file, that still is growing like the unix command 'tail -f' can.
 
 == Download
 
-The latest version of <b>File::Tail</b> (file-tail) can be found at
+The latest version of <b>IO::Tail</b> (file-tail) can be found at
 
-http://www.ping.de/~flori
+https://github.com/octplane/ruby-io-tail
 
 Online Documentation should be located at
 
-http://flori.github.com/file-tail
 
 == Installation
 
 To install file-tail via its gem type:
 
-# gem install file-tail
+# gem install io-tail
 
 To install from the source repository, just type into the command line as root:
 
@@ -67,6 +66,8 @@ pager program that use this module. You also may want look
 at the end of file/tail.rb for a little example.
 
 == Author
+
+Pierre Baillet mailto:pierre@baillet.name
 
 Florian Frank mailto:flori@ping.de
 

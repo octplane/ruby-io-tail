@@ -4,15 +4,15 @@ require 'gem_hadar'
 
 
 $: << File.join(File.dirname(__FILE__),'lib')
-require 'file/tail/version'
+require 'io/tail/version'
 
 
 GemHadar do
-  name        'file-tail'
-  path_name   'file/tail'
+  name        'io-tail'
+  path_name   'io/tail'
   author      'Pierre Baillet'
   email       'pierre@baillet.name'
-  homepage    "http://github.com/octplane/#{name}"
+  homepage    "http://github.com/octplane/ruby-#{name}"
   summary     "#{path_name.camelize} for Ruby"
   description 'Library to tail files and process in Ruby'
   test_dir    'tests'

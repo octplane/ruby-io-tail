@@ -1,8 +1,9 @@
-class File
+class IO
   # This module can be included in your own File subclasses or used to extend
   # files you want to tail.
   module Tail
-    class TailableProcess  < File::Tail::Tailable
+    # A Process that's run and tailed
+    class Process  < IO::Tail::Tailable
 
       attr_accessor :_command
       attr_reader :_process

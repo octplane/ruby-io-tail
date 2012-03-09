@@ -4,7 +4,7 @@ $: << File.dirname(__FILE__)
 $: << File.join(File.dirname(__FILE__),'..', 'lib')
 
 require 'test_helper'
-require 'file/tail'
+require 'io-tail'
 require 'timeout'
 require 'thread'
 Thread.abort_on_exception = true
@@ -14,8 +14,8 @@ class FileTailTest < Test::Unit::TestCase
   def setup
     @out = File.new("test.#$$", "wb")
     append(@out, 100)
-    in_file = File.new(@out.path, "rb")
-    @in = File::Tail::TailableFile.new(in_file)
+    in_file = ::File.new(@out.path, "rb")
+    @in = IO::Tail::File.new(in_file)
     @in.interval            = 0.4
     @in.max_interval        = 0.8
     @in.reopen_deleted      = true # is default

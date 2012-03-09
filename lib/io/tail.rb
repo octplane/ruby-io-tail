@@ -1,12 +1,8 @@
-class File
-  # This module can be included in your own File subclasses or used to extend
-  # files you want to tail.
+class IO
   module Tail
 
-    #require 'file/tail/process'
-
     # This is the base class of all exceptions that are raised
-    # in File::Tail.
+    # in IO::Tail.
     class TailException < Exception; end
 
     # The DeletedException is raised if a file is
@@ -228,14 +224,14 @@ class File
 
 
 
-    class TailableFile < Tailable
+    class File < Tailable
       attr_reader :_file
 
       def initialize(file_or_filename = nil)
         super()
         if file_or_filename.is_a?(String)
-          @_file = File.new(file_or_filename, 'rb')
-        elsif file_or_filename.is_a?(File)
+          @_file = ::File.new(file_or_filename, 'rb')
+        elsif file_or_filename.is_a?(::File)
           @_file = file_or_filename
         end
       end
@@ -255,7 +251,7 @@ class File
       # Skip the first <code>n</code> lines of this file. The default is to don't
       # skip any lines at all and start at the beginning of this file.
       def forward(n = 0)
-        self._file.seek(0, File::SEEK_SET)
+        self._file.seek(0, ::File::SEEK_SET)
         while n > 0 and not self._file.eof?
           self._file.readline
           n -= 1
@@ -273,26 +269,26 @@ class File
       # be determined.
       def backward(n = 0, bufsize = nil)
         if n <= 0
-          self._file.seek(0, File::SEEK_END)
+          self._file.seek(0, ::File::SEEK_END)
           return self
         end
         bufsize ||= default_bufsize || self._file.stat.blksize || 8192
         size = self._file.stat.size
         begin
           if bufsize < size
-            self._file.seek(0, File::SEEK_END)
+            self._file.seek(0, ::File::SEEK_END)
             while n > 0 and self._file.tell > 0 do
               start = self._file.tell
-              self._file.seek(-bufsize, File::SEEK_CUR)
+              self._file.seek(-bufsize, ::File::SEEK_CUR)
               buffer = self._file.read(bufsize)
               n -= buffer.count("\n")
-              self._file.seek(-bufsize, File::SEEK_CUR)
+              self._file.seek(-bufsize, ::File::SEEK_CUR)
             end
           else
-            self._file.seek(0, File::SEEK_SET)
+            self._file.seek(0, ::File::SEEK_SET)
             buffer = self._file.read(size)
             n -= buffer.count("\n")
-            self._file.seek(0, File::SEEK_SET)
+            self._file.seek(0, ::File::SEEK_SET)
           end
         rescue Errno::EINVAL
           size = self._file.tell
@@ -303,14 +299,14 @@ class File
           pos = buffer.index("\n", pos + 1)
           n += 1
         end
-        self._file.seek(pos + 1, File::SEEK_CUR)
+        self._file.seek(pos + 1, ::File::SEEK_CUR)
         self
       end
 
       # On EOF, we seek to position 0
       # Next read will reopen the file if it has changed
       def handle_EOFError
-        self._file.seek(0, File::SEEK_CUR)
+        self._file.seek(0, ::File::SEEK_CUR)
         super
       end
 
@@ -329,7 +325,7 @@ class File
       end
 
       def restat
-        stat = File.stat(self._file.path)
+        stat = ::File.stat(self._file.path)
         if @stat
           if stat.ino != @stat.ino or stat.dev != @stat.dev
             @stat = nil
@@ -349,7 +345,7 @@ class File
       def reopen_tailable(mode)
         $DEBUG and $stdout.print "Reopening '#{path}', mode = #{mode}.\n"
         @no_read = 0
-        self._file.reopen(File.new(self._file.path, 'rb'))
+        self._file.reopen(::File.new(self._file.path, 'rb'))
         if mode == :bottom
           backward
         end
@@ -363,25 +359,5 @@ class File
       end
 
     end
-  end
-end
-
-if $0 == __FILE__
-  filename = ARGV.shift or fail "Usage: #$0 filename [number]"
-  number = (ARGV.shift || 0).to_i
-  File.open(filename) do |log|
-    log.extend(File::Tail)
-    # Some settings to make watching tail.rb with "ruby -d" fun
-    log.interval            = 1
-    log.max_interval        = 5
-    log.reopen_deleted      = true # is default
-    log.reopen_suspicious   = true # is default
-    log.suspicious_interval = 20
-    number >= 0 ? log.backward(number, 8192) : log.forward(-number)
-    #loop do          # grab 5 lines at a time and return
-    #  log.tail(5) { |line| puts line }
-    #  print "Got 5!\n"
-    #end
-    log.tail { |line| puts line }
   end
 end

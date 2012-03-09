@@ -1,0 +1,7 @@
+require 'io/tail'
+require 'io/tail/process'
+require 'io/tail/version'
+require 'io/tail/logfile'
+require 'io/tail/group'
+require 'io/tail/tailer'
+require 'io/tail/line_extension'

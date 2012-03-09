@@ -1,4 +1,4 @@
-class File
+class IO
   module Tail
     # This is an easy to use Logfile class that includes
     # the File::Tail module.
@@ -23,7 +23,7 @@ class File
     #  File::Tail::Logfile.open(filename, :return_if_eof => true) do |log|
     #    log.tail(10) { |line| puts line }
     #  end
-    class Logfile < TailableFile
+    class Logfile < File
 
       # This method creates an File::Tail::Logfile object and
       # yields to it, and closes it, if a block is given, otherwise it just
