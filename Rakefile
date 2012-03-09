@@ -2,6 +2,11 @@
 
 require 'gem_hadar'
 
+
+$: << File.join(File.dirname(__FILE__),'lib')
+require 'file/tail/version'
+
+
 GemHadar do
   name        'file-tail'
   path_name   'file/tail'
@@ -13,6 +18,7 @@ GemHadar do
   test_dir    'tests'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '*.rbc'
   readme      'README.rdoc'
+  version     File::Tail::VERSION
 
   dependency  'tins', '~>0.3'
 

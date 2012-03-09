@@ -70,11 +70,11 @@ class ProcessTailTest < Test::Unit::TestCase
           @in.kill_inner 
           # The tailer will see something's wrong and hopefully reopen the process
           # We have to wait a bit for the tailer to notice the process is down and restart it
-          sleep(2)
+          sleep(4)
         end
       end
     end
-    timeout(5) do
+    timeout(6) do
       tail_position = 0
       @in.tail { |l|
         assert_equal(TAIL_CONTENT[tail_position], l.chomp)

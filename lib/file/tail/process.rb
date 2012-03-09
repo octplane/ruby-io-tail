@@ -18,7 +18,9 @@ class File
       # unless they are no longer tailable
       def handle_EOFError
         # Attempt to reopen
-        raise ReopenException
+        if @reopen_suspicious
+          raise ReopenException
+        end
       end
 
       # Ignore the mode

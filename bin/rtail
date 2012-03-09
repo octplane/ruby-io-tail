@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'file/tail'
+require 'file-tail'
 require 'tins/go'
 include Tins::GO
 require 'thread'

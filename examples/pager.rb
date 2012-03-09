@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # A poor man's pager... :)
 
-require 'file/tail'
+require 'file-tail'
 
 filename = ARGV.shift or fail "Usage: #$0 filename [height]"
 height = (ARGV.shift || ENV['LINES'] || 23).to_i - 1
