@@ -1,5 +1,5 @@
 module IO::Tail
-  # IO::Tail version
+  # Io::Tail version
   VERSION         = '0.0.2'
   VERSION_ARRAY   = VERSION.split(/\./).map { |x| x.to_i } # :nodoc:
   VERSION_MAJOR   = VERSION_ARRAY[0] # :nodoc:
