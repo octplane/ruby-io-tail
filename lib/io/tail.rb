@@ -234,6 +234,7 @@ class IO
         elsif file_or_filename.is_a?(::File)
           @_file = file_or_filename
         end
+        self._file.seek(0, ::File::SEEK_END)
       end
 
       def close
