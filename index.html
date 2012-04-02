@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Ruby-io-tail : IO::Tail for ruby" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ruby-io-tail</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/octplane/ruby-io-tail">Fork Me on GitHub</a>
+
+          <h1 id="project_title">Ruby-io-tail</h1>
+          <h2 id="project_tagline">IO::Tail for ruby</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/octplane/ruby-io-tail/zipball/master">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/octplane/ruby-io-tail/tarball/master">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>IO::Tail for Ruby</h1>
+
+<h2>Description</h2>
+
+<p>This is a small ruby library that allows it to "tail" various IOs in Ruby, including
+following a file, that still is growing like the unix command 'tail -f' can.</p>
+
+<h2>Download</h2>
+
+<p>The latest version of <b>IO::Tail</b> (io-tail) can be found at</p>
+
+<p><a href="https://github.com/octplane/ruby-io-tail">https://github.com/octplane/ruby-io-tail</a></p>
+
+<p>Online Documentation should be located at</p>
+
+<p><a href="http://rubydoc.info/github/octplane/ruby-io-tail/">http://rubydoc.info/github/octplane/ruby-io-tail/</a></p>
+
+<h2>Installation</h2>
+
+<p>To install io-tail via its gem type:</p>
+
+<p><code>gem install io-tail</code></p>
+
+<p>To install from the source repository, just type into the command line as root:</p>
+
+<p><code>rake install</code></p>
+
+<h2>Usage</h2>
+
+<p>File::Tail is a module in the File class. A lightweight class interface for
+logfiles can be seen under File::Tail::Logfile.</p>
+
+<p>Direct extension of File objects with File::Tail works like that:</p>
+
+<div class="highlight">
+<pre> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">log</span><span class="o">|</span>
+   <span class="n">log</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">File</span><span class="o">::</span><span class="no">Tail</span><span class="p">)</span>
+   <span class="n">log</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="mi">10</span>
+   <span class="n">log</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+   <span class="n">log</span><span class="o">.</span><span class="n">tail</span> <span class="p">{</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">line</span> <span class="p">}</span>
+ <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>It's also possible to mix File::Tail in your own File classes
+(see also File::Tail::Logfile):</p>
+
+<div class="highlight">
+<pre> <span class="k">class</span> <span class="nc">MyFile</span> <span class="o">&lt;</span> <span class="no">File</span>
+   <span class="kp">include</span> <span class="no">File</span><span class="o">::</span><span class="no">Tail</span>
+ <span class="k">end</span>
+ <span class="n">log</span> <span class="o">=</span> <span class="no">MyFile</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"myfile"</span><span class="p">)</span>
+ <span class="n">log</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="mi">10</span>
+ <span class="n">log</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+ <span class="n">log</span><span class="o">.</span><span class="n">tail</span> <span class="p">{</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="nb">print</span> <span class="n">line</span> <span class="p">}</span>
+</pre>
+</div>
+
+
+<p>The forward/backward method returns self, so it's possible to chain
+methods together like that:</p>
+
+<div class="highlight">
+<pre> <span class="n">log</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span> <span class="p">{</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">line</span> <span class="p">}</span>
+</pre>
+</div>
+
+
+<p>A command line utility named rtail, that uses File::Tail is provided as well.</p>
+
+<h2>Documentation</h2>
+
+<p>To create the documentation of this module, type</p>
+
+<p><code>rake doc</code></p>
+
+<p>and the API documentation is generated.</p>
+
+<p>In the examples directory is a small example of tail and
+pager program that use this module. You also may want look
+at the end of file/tail.rb for a little example.</p>
+
+<h2>Author</h2>
+
+<p>Pierre Baillet mailto:pierre@baillet.name</p>
+
+<p>Florian Frank mailto:flori@ping.de</p>
+
+<h2>License</h2>
+
+<p>This is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License Version 2 as published by
+the Free Software Foundation: <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ruby-io-tail maintained by <a href="https://github.com/octplane">octplane</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
